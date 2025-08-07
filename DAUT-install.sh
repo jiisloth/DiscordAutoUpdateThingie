@@ -1,6 +1,6 @@
 #!/bin/zsh
-MYDIR="$(dirname "$(realpath "$0")")"
-VERSION="1.1"
+MYDIR="$(dirname "$0")"
+VERSION="1.2"
 
 if ! [[ -x "${MYDIR}/DAUT-start.sh" ]]; then
   chmod u+x "${MYDIR}/DAUT-start.sh"
@@ -27,22 +27,7 @@ while true; do
   esac
 done
 
-DESKTOPENTRYLOCATION="$HOME/.local/share/applications/"
-LOCAL=true
-
-if ! [ -f "${DESKTOPENTRYLOCATION}discord.desktop" ]; then
-  DESKTOPENTRYLOCATION="/usr/share/applications/"
-  LOCAL=false
-  if ! [ -f "${DESKTOPENTRYLOCATION}discord.desktop" ]; then
-    DESKTOPENTRYLOCATION="$HOME/.local/share/applications/"
-    LOCAL=true
-  fi
-fi
-
-echo "Adding .desktop entry to ${DESKTOPENTRYLOCATION}"
-
-if [ ${LOCAL} = true ]; then
-  printf '%s\n' '[Desktop Entry]' \
+printf '%s\n' '[Desktop Entry]' \
     "Version=${VERSION}" \
     'Type=Application' \
     "Name=Discord Auto Update Thingie" \
@@ -50,20 +35,9 @@ if [ ${LOCAL} = true ]; then
     'Icon=discord' \
     "Exec=${MYDIR}/DAUT-start.sh" \
     "Path=${MYDIR}" \
-    'Terminal=false' \
-    'Categories=InstantMessaging;Network;' > "${DESKTOPENTRYLOCATION}discord-auto-update-thingie.desktop"
-else
-  printf '%s\n' '[Desktop Entry]' \
-    "Version=${VERSION}" \
-    'Type=Application' \
-    "Name=Discord Auto Update Thingie" \
-    'Comment=sloths script for keeping Discord up to date.' \
-    'Icon=discord' \
-    "Exec=${MYDIR}/DAUT-start.sh" \
-    "Path=${MYDIR}" \
-    'Terminal=false' \
-    'Categories=InstantMessaging;Network;' | sudo tee "${DESKTOPENTRYLOCATION}discord-auto-update-thingie.desktop" > /dev/null
-fi
+    'Terminal=true' \
+    'Actions=' \
+    'Categories=InstantMessaging;Network;' > $HOME/.local/share/applications/discord-auto-update-thingie.desktop
 
 echo "Desktop entry added!"
 
@@ -87,17 +61,6 @@ if [ -f "$HOME${DISCORDDESKTOPENTRY}" ]; then
   echo "Done! You should be able to use Discord Auto Update Thingie now.."
   exit 0
 else
-  DISCORDDESKTOPENTRY="/usr/share/applications/discord.desktop"
-  if [ -f "${DISCORDDESKTOPENTRY}" ]; then
-    NODISPLAY="$(cat "${DISCORDDESKTOPENTRY}" | grep NoDisplay)"
-    if [ "${NODISPLAY}" = "" ]; then
-      echo "NoDisplay=true" | sudo tee -a "${DISCORDDESKTOPENTRY}" > /dev/null
-    else
-      sudo sed -i 's/NoDisplay=.*/NoDisplay=true/' "${DISCORDDESKTOPENTRY}"
-    fi
-    echo "Done! You should be able to use Discord Auto Update Thingie now.."
-    exit 0
-  fi
   echo "Sorry, Could not locate the desktop entry for discord.."
   exit 1
 fi

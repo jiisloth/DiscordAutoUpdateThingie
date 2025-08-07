@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 WORKDIR="$(pwd)"
-MYDIR="$(dirname "$(realpath "$0")")"
+MYDIR="$(dirname "$0")"
 URL=$1
 CURRENT=$2
 NEWEST=$3
@@ -39,10 +39,7 @@ echo "Installing!"
 sudo dpkg -i "${FILENAME}"
 rm "${FILENAME}"
 
-sleep 3s
-echo "Done! starting Discord!"
 ./DAUT-launch.sh &
-sleep 3s
 
 cd "${WORKDIR}" || exit;
 exit 0;

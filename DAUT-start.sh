@@ -1,6 +1,6 @@
 #!/bin/zsh
 WORKDIR="$(pwd)"
-MYDIR="$(dirname "$(realpath "$0")")"
+MYDIR="$(dirname "$0")"
 
 cd "${MYDIR}" || exit 1;
 # go to script main folder
@@ -8,12 +8,12 @@ cd "${MYDIR}" || exit 1;
 DISCORDPID="$(pgrep -f "\bDiscord\b")"
 if [ "${DISCORDPID}" = "" ]; then
   # Discord is not running, check for update before launching.
-  ./DAUT-check.sh
+  ./DAUT-check.sh force
   ./DAUT-launch.sh &
 else
   # Discord is running, use launch.sh to switch window and check for update afterwards..
   ./DAUT-launch.sh &
-  ./DAUT-check.sh &
+  ./DAUT-check.sh force &
 fi
 
 AUTOUPDATERPID="$(pgrep -f DAUT-loop.sh)"

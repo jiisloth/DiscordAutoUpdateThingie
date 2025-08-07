@@ -14,7 +14,7 @@ if [ "${NEWEST_VER}" = "${CURRENT_VER}" ]; then
 else
   while true; do
     ACTIVEWINDOW="$(xprop -id "$(xprop -root _NET_ACTIVE_WINDOW | cut -d ' ' -f 5)" WM_NAME | sed -e 's/.* \(.*\)".*/\1/')"
-    if [ "${ACTIVEWINDOW}" = "Discord" ]; then
+    if [ "${ACTIVEWINDOW}" = "Discord" ] || [ "$1" = "force" ]; then
       break
     fi
     if ! pgrep -f "\bDiscord\b" &>/dev/null; then
