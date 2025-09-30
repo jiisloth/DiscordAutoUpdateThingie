@@ -1,6 +1,6 @@
 #!/bin/zsh
 MYDIR="$(dirname "$0")"
-VERSION="1.2"
+VERSION="1.3"
 
 if ! [[ -x "${MYDIR}/DAUT-start.sh" ]]; then
   chmod u+x "${MYDIR}/DAUT-start.sh"
